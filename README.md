@@ -2,3 +2,5 @@
 
 ## Exercises
 [Exercise 1.1](https://github.com/OtsoH/K8sSubmissions/releases/tag/1.1)
+[Exercise 1.2](https://github.com/OtsoH/K8sSubmissions/releases/tag/1.2)
+
