@@ -1,12 +1,13 @@
 import os
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def root():
-    return {"message": "todo app"}
+    return "<h1>Hello World</h1>"
 
 
 def main():
