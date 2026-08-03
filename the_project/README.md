@@ -1,0 +1,1 @@
+The course project started in 1.2: Todoapp written in Python, using uv for dependency management and FASTAPI as the web framework
