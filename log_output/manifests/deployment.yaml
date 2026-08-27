@@ -12,6 +12,18 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-logs
+          emptyDir: {}
       containers:
-        - name: log-output
-          image: log_output:1.0
+        - name: log-output-writer
+          image: log_output_writer:1.0
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /app/files
+        - name: log-output-reader
+          image: log_output_reader:1.0
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /app/files
+              readOnly: true
