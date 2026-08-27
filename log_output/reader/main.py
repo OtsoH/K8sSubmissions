@@ -6,15 +6,16 @@ from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 
 LOG_FILE = Path(os.getenv("LOG_FILE", "/app/files/log.txt"))
+COUNTER_FILE = Path(os.getenv("COUNTER_FILE", "/app/data/counter.txt"))
 
 app = FastAPI()
 
 
 @app.get("/", response_class=PlainTextResponse)
 def root():
-    if not LOG_FILE.exists():
-        return "no log output yet"
-    return LOG_FILE.read_text()
+    log_content = LOG_FILE.read_text() if LOG_FILE.exists() else "no log output yet\n"
+    count = COUNTER_FILE.read_text().strip() if COUNTER_FILE.exists() else "0"
+    return f"{log_content}Ping / Pongs: {count}"
 
 
 def main():
