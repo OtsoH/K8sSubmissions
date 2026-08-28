@@ -23,3 +23,7 @@
 [Exercise 1.10](https://github.com/OtsoH/K8sSubmissions/tree/1.10)
 
 [Exercise 1.11](https://github.com/OtsoH/K8sSubmissions/tree/1.11)
+
+[Exercise 1.12](https://github.com/OtsoH/K8sSubmissions/tree/1.12)
+
+[Exercise 1.13](https://github.com/OtsoH/K8sSubmissions/tree/1.13)
