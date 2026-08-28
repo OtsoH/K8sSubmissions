@@ -1,3 +1,4 @@
+import html
 import os
 import time
 import urllib.request
@@ -11,24 +12,46 @@ CACHE_DIR = Path(os.getenv("IMAGE_CACHE_DIR", "/app/files"))
 IMAGE_FILE = CACHE_DIR / "image.jpg"
 IMAGE_URL = "https://picsum.photos/1200"
 CACHE_SECONDS = 600
+MAX_TODO_LENGTH = 140
+
+TODOS = [
+    "Buy a car",
+    "Get employed by Ericsson",
+    "Plant a garden",
+    "Make a new friend",
+]
 
 app = FastAPI()
 
-PAGE = """<!doctype html>
+
+def render_page():
+    items = "\n".join(f"    <li>{html.escape(todo)}</li>" for todo in TODOS)
+    return f"""<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Todo app</title>
   <style>
-    body { font-family: sans-serif; margin: 2rem; }
-    h1 { margin: 0 0 1rem; }
-    img { max-width: 100%; height: auto; display: block; }
+    body {{ font-family: sans-serif; margin: 2rem; }}
+    h1 {{ margin: 0 0 1rem; }}
+    img {{ max-width: 100%; height: auto; display: block; }}
+    .new-todo {{ margin: 1rem 0; }}
+    .new-todo input {{ width: 24rem; max-width: 100%; padding: 0.3rem; }}
+    ul {{ padding-left: 1.25rem; }}
   </style>
 </head>
 <body>
   <h1>Todo app</h1>
   <img src="/image" alt="A random picture, refreshed every 10 minutes">
+  <div class="new-todo">
+    <input type="text" name="todo" maxlength="{MAX_TODO_LENGTH}"
+           placeholder="What needs doing?" aria-label="New todo">
+    <button type="button">Send</button>
+  </div>
+  <ul>
+{items}
+  </ul>
 </body>
 </html>
 """
@@ -51,7 +74,7 @@ def fetch_image():
 
 @app.get("/", response_class=HTMLResponse)
 def root():
-    return PAGE
+    return render_page()
 
 
 @app.get("/image")
