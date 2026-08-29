@@ -27,3 +27,7 @@
 [Exercise 1.12](https://github.com/OtsoH/K8sSubmissions/tree/1.12)
 
 [Exercise 1.13](https://github.com/OtsoH/K8sSubmissions/tree/1.13)
+
+[Exercise 2.1](https://github.com/OtsoH/K8sSubmissions/tree/2.1)
+
+[Exercise 2.2](https://github.com/OtsoH/K8sSubmissions/tree/2.2)
