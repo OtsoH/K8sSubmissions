@@ -1,0 +1,11 @@
+[project]
+name = "todo-app"
+version = "0.1.0"
+description = "Serves the todo page and a cached random picture"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx>=0.28.1",
+    "python-multipart>=0.0.32",
+    "uvicorn>=0.52.1",
+]

@@ -4,28 +4,40 @@ import time
 import urllib.request
 from pathlib import Path
 
+import httpx
 import uvicorn
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import FastAPI, Form, HTTPException
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 
 CACHE_DIR = Path(os.getenv("IMAGE_CACHE_DIR", "/app/files"))
 IMAGE_FILE = CACHE_DIR / "image.jpg"
 IMAGE_URL = "https://picsum.photos/1200"
 CACHE_SECONDS = 600
 MAX_TODO_LENGTH = 140
-
-TODOS = [
-    "Buy a car",
-    "Get employed by Ericsson",
-    "Plant a garden",
-    "Make a new friend",
-]
+TODO_BACKEND_URL = os.getenv("TODO_BACKEND_URL", "http://todo-backend-svc:2346")
 
 app = FastAPI()
 
 
-def render_page():
-    items = "\n".join(f"    <li>{html.escape(todo)}</li>" for todo in TODOS)
+def fetch_todos():
+    try:
+        response = httpx.get(f"{TODO_BACKEND_URL}/todos", timeout=2)
+        response.raise_for_status()
+        return response.json()
+    except (httpx.HTTPError, ValueError) as error:
+        print(f"todo-backend unreachable: {error}", flush=True)
+        return None
+
+
+def render_items(todos):
+    if todos is None:
+        return "    <li><em>todo-backend is unavailable</em></li>"
+    if not todos:
+        return "    <li><em>Nothing to do yet</em></li>"
+    return "\n".join(f"    <li>{html.escape(todo)}</li>" for todo in todos)
+
+
+def render_page(todos):
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -44,13 +56,13 @@ def render_page():
 <body>
   <h1>Todo app</h1>
   <img src="/image" alt="A random picture, refreshed every 10 minutes">
-  <div class="new-todo">
-    <input type="text" name="todo" maxlength="{MAX_TODO_LENGTH}"
+  <form class="new-todo" method="post" action="/todos">
+    <input type="text" name="todo" maxlength="{MAX_TODO_LENGTH}" required
            placeholder="What needs doing?" aria-label="New todo">
-    <button type="button">Send</button>
-  </div>
+    <button type="submit">Send</button>
+  </form>
   <ul>
-{items}
+{render_items(todos)}
   </ul>
 </body>
 </html>
@@ -74,7 +86,21 @@ def fetch_image():
 
 @app.get("/", response_class=HTMLResponse)
 def root():
-    return render_page()
+    return render_page(fetch_todos())
+
+
+@app.post("/todos")
+def create_todo(todo: str = Form(...)):
+    text = todo.strip()[:MAX_TODO_LENGTH]
+    if text:
+        try:
+            response = httpx.post(
+                f"{TODO_BACKEND_URL}/todos", json={"todo": text}, timeout=2
+            )
+            response.raise_for_status()
+        except httpx.HTTPError as error:
+            print(f"Could not create todo: {error}", flush=True)
+    return RedirectResponse("/", status_code=303)
 
 
 @app.get("/image")

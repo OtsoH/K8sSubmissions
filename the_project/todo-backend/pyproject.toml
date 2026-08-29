@@ -1,8 +1,7 @@
 [project]
-name = "the-project"
+name = "todo-backend"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "Stores the todo items in memory and serves them over HTTP"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",

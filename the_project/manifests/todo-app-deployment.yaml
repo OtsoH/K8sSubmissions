@@ -18,7 +18,7 @@ spec:
             claimName: todo-app-pvc
       containers:
         - name: todo-app
-          image: todo-app:1.4
+          image: todo-app:1.5
           volumeMounts:
             - name: image-cache
               mountPath: /app/files
@@ -27,3 +27,5 @@ spec:
               value: "3000"
             - name: IMAGE_CACHE_DIR
               value: /app/files
+            - name: TODO_BACKEND_URL
+              value: http://todo-backend-svc:2346
