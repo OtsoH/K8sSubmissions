@@ -5,7 +5,8 @@ metadata:
   namespace: exercises
 spec:
   rules:
-    - http:
+    - host: exercises.localhost
+      http:
         paths:
           - path: /pingpong
             pathType: Prefix
