@@ -3,7 +3,6 @@ import threading
 
 import uvicorn
 from fastapi import FastAPI
-from pathlib import Path
 from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
@@ -11,15 +10,11 @@ app = FastAPI()
 counter = 0
 counter_lock = threading.Lock()
 
-COUNTER_FILE = Path(os.getenv("COUNTER_FILE", "/app/data/counter.txt"))
-
 def next_count():
+    global counter
     with counter_lock:
-        if COUNTER_FILE.exists():
-            current = int(COUNTER_FILE.read_text().strip())
-        else:
-            current = 0
-        COUNTER_FILE.write_text(str(current + 1))
+        current = counter
+        counter += 1
     return current
 
 @app.get("/", response_class=PlainTextResponse)
@@ -27,6 +22,9 @@ def next_count():
 def pingpong():
     return f"pong {next_count()}"
 
+@app.get("/pings", response_class=PlainTextResponse)
+def pings():
+    return str(counter)
 
 def main():
     port = int(os.getenv("PORT", "3000"))
