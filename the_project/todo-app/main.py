@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 
 CACHE_DIR = Path(os.getenv("IMAGE_CACHE_DIR", "/app/files"))
 IMAGE_FILE = CACHE_DIR / "image.jpg"
-IMAGE_URL = "https://picsum.photos/1200"
+IMAGE_URL = os.getenv("IMAGE_URL", "https://picsum.photos/1200")
 CACHE_SECONDS = 600
 MAX_TODO_LENGTH = 140
 TODO_BACKEND_URL = os.getenv("TODO_BACKEND_URL", "http://todo-backend-svc:2346")

@@ -25,6 +25,9 @@ spec:
           volumeMounts:
             - name: shared-logs
               mountPath: /app/files
+          env:
+            - name: LOG_FILE
+              value: /app/files/log.txt
         - name: log-output-reader
           image: log_output_reader:1.2
           volumeMounts:
@@ -35,6 +38,12 @@ spec:
               mountPath: /app/config
               readOnly: true
           env:
+            - name: PORT
+              value: "3000"
+            - name: LOG_FILE
+              value: /app/files/log.txt
+            - name: INFORMATION_FILE
+              value: /app/config/information.txt
             - name: PING_PONG_URL
               value: http://ping-pong-svc:3456/pings
             - name: MESSAGE
