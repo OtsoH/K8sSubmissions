@@ -16,6 +16,9 @@ spec:
       volumes:
         - name: shared-logs
           emptyDir: {}
+        - name: config
+          configMap:
+            name: log-output-configmap
       containers:
         - name: log-output-writer
           image: log_output_writer:1.0
@@ -23,11 +26,19 @@ spec:
             - name: shared-logs
               mountPath: /app/files
         - name: log-output-reader
-          image: log_output_reader:1.1
+          image: log_output_reader:1.2
           volumeMounts:
             - name: shared-logs
               mountPath: /app/files
               readOnly: true
+            - name: config
+              mountPath: /app/config
+              readOnly: true
           env:
             - name: PING_PONG_URL
               value: http://ping-pong-svc:3456/pings
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: MESSAGE

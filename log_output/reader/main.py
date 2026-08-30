@@ -8,6 +8,8 @@ from fastapi.responses import PlainTextResponse
 
 LOG_FILE = Path(os.getenv("LOG_FILE", "/app/files/log.txt"))
 PING_PONG_URL = os.getenv("PING_PONG_URL", "http://ping-pong-svc:3456/pings")
+INFORMATION_FILE = Path(os.getenv("INFORMATION_FILE", "/app/config/information.txt"))
+MESSAGE = os.getenv("MESSAGE", "no message set")
 
 app = FastAPI()
 
@@ -24,8 +26,17 @@ def pong_count():
 
 @app.get("/", response_class=PlainTextResponse)
 def root():
+    information = (
+        INFORMATION_FILE.read_text().strip()
+        if INFORMATION_FILE.exists()
+        else "no information file"
+    )
     log_content = LOG_FILE.read_text() if LOG_FILE.exists() else "no log output yet\n"
-    return f"{log_content}Ping / Pongs: {pong_count()}"
+    return (
+        f"file content: {information}\n"
+        f"env variable: MESSAGE={MESSAGE}\n"
+        f"{log_content}Ping / Pongs: {pong_count()}"
+    )
 
 
 def main():
