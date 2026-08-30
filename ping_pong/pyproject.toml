@@ -1,9 +1,10 @@
 [project]
 name = "ping-pong"
 version = "0.1.0"
-description = "Responds with pong and an in-memory request counter"
+description = "Responds with pong and a request counter stored in Postgres"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",
+    "psycopg[binary]>=3.2.0",
     "uvicorn>=0.52.1",
 ]

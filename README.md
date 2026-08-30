@@ -39,3 +39,5 @@
 [Exercise 2.5](https://github.com/OtsoH/K8sSubmissions/tree/2.5)
 
 [Exercise 2.6](https://github.com/OtsoH/K8sSubmissions/tree/2.6)
+
+[Exercise 2.7](https://github.com/OtsoH/K8sSubmissions/tree/2.7)
