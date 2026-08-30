@@ -4,7 +4,7 @@ import time
 import psycopg
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 MAX_TODO_LENGTH = 140
 
@@ -28,7 +28,7 @@ def wait_for_db():
 
 
 class NewTodo(BaseModel):
-    todo: str = Field(min_length=1, max_length=MAX_TODO_LENGTH)
+    todo: str
 
 
 @app.get("/todos")
@@ -41,7 +41,13 @@ def get_todos():
 def create_todo(new_todo: NewTodo):
     text = new_todo.todo.strip()
     if not text:
+        print("Rejected todo: empty", flush=True)
         raise HTTPException(status_code=400, detail="todo must not be empty")
+    if len(text) > MAX_TODO_LENGTH:
+        print(f"Rejected todo: {len(text)} chars, max {MAX_TODO_LENGTH}: {text[:80]}...", flush=True)
+        raise HTTPException(
+            status_code=400, detail=f"todo must be at most {MAX_TODO_LENGTH} characters"
+        )
     with psycopg.connect() as conn:
         conn.execute("INSERT INTO todos (content) VALUES (%s)", (text,))
     print(f"Created todo: {text}", flush=True)

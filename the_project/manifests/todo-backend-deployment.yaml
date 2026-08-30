@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: todo-backend:1.1
+          image: todo-backend:1.2
           envFrom:
             - configMapRef:
                 name: postgres-config
