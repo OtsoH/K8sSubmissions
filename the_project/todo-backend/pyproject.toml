@@ -1,9 +1,10 @@
 [project]
 name = "todo-backend"
 version = "0.1.0"
-description = "Stores the todo items in memory and serves them over HTTP"
+description = "Stores the todo items in Postgres and serves them over HTTP"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.141.1",
+    "psycopg[binary]>=3.2.0",
     "uvicorn>=0.52.1",
 ]

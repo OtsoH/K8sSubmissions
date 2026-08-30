@@ -15,7 +15,15 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: todo-backend:1.0
+          image: todo-backend:1.1
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           env:
             - name: PORT
               value: "3000"
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
