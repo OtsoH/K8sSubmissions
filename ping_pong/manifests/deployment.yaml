@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ping-pong
-          image: ping-pong:1.2
+          image: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/ping-pong:1.2
           env:
             - name: PORT
               value: "3000"
