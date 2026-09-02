@@ -5,8 +5,7 @@ metadata:
   namespace: exercises
 spec:
   rules:
-    - host: exercises.localhost
-      http:
+    - http:
         paths:
           - path: /pingpong
             pathType: Prefix
@@ -14,7 +13,7 @@ spec:
               service:
                 name: ping-pong-svc
                 port:
-                  number: 3456
+                  number: 80
           - path: /
             pathType: Prefix
             backend:

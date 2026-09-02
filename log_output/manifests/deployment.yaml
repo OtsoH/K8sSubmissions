@@ -21,7 +21,7 @@ spec:
             name: log-output-configmap
       containers:
         - name: log-output-writer
-          image: log_output_writer:1.0
+          image: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/log-output-writer:1.0
           volumeMounts:
             - name: shared-logs
               mountPath: /app/files
@@ -29,7 +29,7 @@ spec:
             - name: LOG_FILE
               value: /app/files/log.txt
         - name: log-output-reader
-          image: log_output_reader:1.2
+          image: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/log-output-reader:1.2
           volumeMounts:
             - name: shared-logs
               mountPath: /app/files
@@ -45,7 +45,7 @@ spec:
             - name: INFORMATION_FILE
               value: /app/config/information.txt
             - name: PING_PONG_URL
-              value: http://ping-pong-svc:3456/pings
+              value: http://ping-pong-svc/pings
             - name: MESSAGE
               valueFrom:
                 configMapKeyRef:
