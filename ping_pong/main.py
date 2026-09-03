@@ -29,7 +29,6 @@ def wait_for_db():
 
 
 @app.get("/", response_class=PlainTextResponse)
-@app.get("/pingpong", response_class=PlainTextResponse)
 def pingpong():
     count = query("UPDATE counter SET value = value + 1 WHERE id = 1 RETURNING value - 1")
     return f"pong {count}"
