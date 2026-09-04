@@ -55,3 +55,5 @@
 [Exercise 3.3](https://github.com/OtsoH/K8sSubmissions/tree/3.3)
 
 [Exercise 3.4](https://github.com/OtsoH/K8sSubmissions/tree/3.4)
+
+[Exercise 3.5](https://github.com/OtsoH/K8sSubmissions/tree/3.5)
