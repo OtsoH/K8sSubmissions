@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+            - name: pg-dump
+              image: postgres:16-alpine
+              command:
+                - sh
+                - -c
+                - pg_dump --no-owner > /backup/todo.sql
+              envFrom:
+                - configMapRef:
+                    name: postgres-config
+              env:
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-secret
+                      key: POSTGRES_PASSWORD
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+          containers:
+            - name: upload
+              image: google/cloud-sdk:583.0.0-alpine
+              command:
+                - sh
+                - -c
+                - |
+                  set -e
+                  gcloud auth activate-service-account --key-file=/var/secrets/google/key.json
+                  gcloud storage cp /backup/todo.sql \
+                    gs://dwk-gke-507418-todo-backups/todo-$(date -u +%Y-%m-%dT%H%M%SZ).sql
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+                  readOnly: true
+                - name: storage-sa-key
+                  mountPath: /var/secrets/google
+                  readOnly: true
+          volumes:
+            - name: backup
+              emptyDir: {}
+            - name: storage-sa-key
+              secret:
+                secretName: storage-sa-key

@@ -15,6 +15,7 @@ resources:
   - todo-backend-deployment.yaml
   - todo-backend-service.yaml
   - wikipedia-todo-cronjob.yaml
+  - postgres-backup-cronjob.yaml
   - gateway.yaml
   - httproute.yaml
 
