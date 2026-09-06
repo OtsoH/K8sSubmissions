@@ -108,3 +108,7 @@ For a small project whose data can be regenerated, DIY wins on cost and on keepi
 [Exercise 3.10](https://github.com/OtsoH/K8sSubmissions/tree/3.10)
 
 [Exercise 3.11](https://github.com/OtsoH/K8sSubmissions/tree/3.11)
+
+[Exercise 3.12](https://github.com/OtsoH/K8sSubmissions/tree/3.12)
+
+![Cloud Logging: a new todo being created](the_project/logs.png)
