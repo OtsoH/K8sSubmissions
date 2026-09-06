@@ -106,3 +106,5 @@
 For a small project whose data can be regenerated, DIY wins on cost and on keeping local and cloud identical. Once losing the data would actually hurt, buying backups and failover is cheaper than building them.
 
 [Exercise 3.10](https://github.com/OtsoH/K8sSubmissions/tree/3.10)
+
+[Exercise 3.11](https://github.com/OtsoH/K8sSubmissions/tree/3.11)

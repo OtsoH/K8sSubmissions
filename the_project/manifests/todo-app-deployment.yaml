@@ -21,6 +21,13 @@ spec:
       containers:
         - name: todo-app
           image: todo-app
+          resources:
+            requests:
+              cpu: 100m
+              memory: 96Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
           volumeMounts:
             - name: image-cache
               mountPath: /app/files
