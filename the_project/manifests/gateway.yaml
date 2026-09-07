@@ -3,11 +3,14 @@ kind: Gateway
 metadata:
   name: project-gateway
 spec:
-  gatewayClassName: gke-l7-global-external-managed
+  gatewayClassName: traefik
   listeners:
     - name: http
       protocol: HTTP
-      port: 80
+      # Traefik attaches a listener to the entrypoint with the same port, and
+      # its web entrypoint listens on 8000 inside the pod (published as 80).
+      port: 8000
+      hostname: project.localhost
       allowedRoutes:
         namespaces:
           from: Same

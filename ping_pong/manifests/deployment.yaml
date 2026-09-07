@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ping-pong-dep
-  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -15,7 +14,11 @@ spec:
     spec:
       containers:
         - name: ping-pong
-          image: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/ping-pong:1.3
+          image: ping-pong
+          readinessProbe:
+            httpGet:
+              path: /pings
+              port: 3000
           env:
             - name: PORT
               value: "3000"

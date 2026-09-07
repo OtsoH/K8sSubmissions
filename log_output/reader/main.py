@@ -24,6 +24,14 @@ def pong_count():
         return "unavailable"
 
 
+@app.get("/healthz", response_class=PlainTextResponse)
+def healthz():
+    # Deliberately unguarded: an httpx error becomes a 500 and the readiness
+    # probe fails, which is the point. root() keeps swallowing it instead.
+    httpx.get(PING_PONG_URL, timeout=2).raise_for_status()
+    return "ok"
+
+
 @app.get("/", response_class=PlainTextResponse)
 def root():
     information = (

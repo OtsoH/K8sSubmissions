@@ -21,8 +21,6 @@ resources:
 
 images:
   - name: todo-app
-    newName: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/todo-app
     newTag: "1.6"
   - name: todo-backend
-    newName: europe-north1-docker.pkg.dev/dwk-gke-507418/dwk-images/todo-backend
     newTag: "1.2"

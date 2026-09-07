@@ -14,7 +14,7 @@ def query(sql):
 
 
 def wait_for_db():
-    for _ in range(60):
+    while True:
         try:
             with psycopg.connect() as conn:
                 conn.execute(
@@ -25,7 +25,6 @@ def wait_for_db():
         except psycopg.OperationalError as e:
             print(f"Waiting for database: {e}", flush=True)
             time.sleep(2)
-    raise RuntimeError("Database never became available")
 
 
 @app.get("/", response_class=PlainTextResponse)
