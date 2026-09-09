@@ -21,6 +21,10 @@ spec:
       containers:
         - name: todo-app
           image: todo-app
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
           resources:
             requests:
               cpu: 100m

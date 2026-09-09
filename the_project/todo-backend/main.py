@@ -31,6 +31,17 @@ class NewTodo(BaseModel):
     todo: str
 
 
+@app.get("/healthz")
+def healthz():
+    try:
+        with psycopg.connect() as conn:
+            conn.execute("SELECT 1")
+    except psycopg.Error as error:
+        print(f"Health check failed: {error}", flush=True)
+        raise HTTPException(status_code=500, detail="database unavailable")
+    return {"status": "ok"}
+
+
 @app.get("/todos")
 def get_todos():
     with psycopg.connect() as conn:

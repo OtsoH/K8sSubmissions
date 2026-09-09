@@ -17,6 +17,7 @@ MAX_TODO_LENGTH = 140
 TODO_BACKEND_URL = os.getenv("TODO_BACKEND_URL", "http://todo-backend-svc:2346")
 
 app = FastAPI()
+healthy = True
 
 
 def fetch_todos():
@@ -61,6 +62,9 @@ def render_page(todos):
            placeholder="What needs doing?" aria-label="New todo">
     <button type="submit">Send</button>
   </form>
+  <form method="post" action="/break">
+    <button type="submit">Break the app</button>
+  </form>
   <ul>
 {render_items(todos)}
   </ul>
@@ -86,7 +90,24 @@ def fetch_image():
 
 @app.get("/", response_class=HTMLResponse)
 def root():
+    if not healthy:
+        raise HTTPException(status_code=503, detail="app is broken")
     return render_page(fetch_todos())
+
+
+@app.get("/healthz")
+def healthz():
+    if not healthy:
+        raise HTTPException(status_code=500, detail="unhealthy")
+    return {"status": "ok"}
+
+
+@app.post("/break")
+def break_app():
+    global healthy
+    healthy = False
+    print("Break button pressed: the app is now unhealthy", flush=True)
+    return RedirectResponse("/", status_code=303)
 
 
 @app.post("/todos")
