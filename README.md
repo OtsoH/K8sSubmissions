@@ -116,3 +116,16 @@ For a small project whose data can be regenerated, DIY wins on cost and on keepi
 [Exercise 4.1](https://github.com/OtsoH/K8sSubmissions/tree/4.1)
 
 [Exercise 4.2](https://github.com/OtsoH/K8sSubmissions/tree/4.2)
+
+[Exercise 4.3](https://github.com/OtsoH/K8sSubmissions/tree/4.3)
+
+```promql
+count(kube_pod_info{namespace="monitoring", created_by_kind="StatefulSet"})
+```
+
+![Prometheus: StatefulSet-owned pods in the monitoring namespace](monitoring/prom_statefulset_count.png)
+
+The value is 2, not the 3 unlike in the exercise instructions, because this cluster runs a different set of
+charts. Kubectl agrees:
+
+![kubectl: the same two StatefulSet pods](monitoring/prom_ground_truth.png)
