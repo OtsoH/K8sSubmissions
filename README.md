@@ -129,3 +129,11 @@ The value is 2, not the 3 unlike in the exercise instructions, because this clus
 charts. Kubectl agrees:
 
 ![kubectl: the same two StatefulSet pods](monitoring/prom_ground_truth.png)
+
+[Exercise 4.4](https://github.com/OtsoH/K8sSubmissions/tree/4.4)
+
+At "result < 0.01" the first measurement already failed and revision 3 was aborted after a
+single sample. Raising the threshold to "result < 0.1" and retrying let the same revision
+pass all five measurements and promote to stable.
+
+![kubectl argo rollouts: the same revision aborted at a 0.01 threshold, promoted at 0.1](ping_pong/manifests/analysisruns.png)

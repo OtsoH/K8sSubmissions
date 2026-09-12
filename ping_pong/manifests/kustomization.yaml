@@ -7,10 +7,11 @@ resources:
   - postgres-secret.yaml
   - postgres-service.yaml
   - postgres-statefulset.yaml
-  - deployment.yaml
+  - rollout.yaml
+  - analysistemplate.yaml
   - service.yaml
   - httproute.yaml
 
 images:
   - name: ping-pong
-    newTag: "1.4"
+    newTag: "1.6"
