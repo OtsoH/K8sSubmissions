@@ -137,3 +137,5 @@ single sample. Raising the threshold to "result < 0.1" and retrying let the same
 pass all five measurements and promote to stable.
 
 ![kubectl argo rollouts: the same revision aborted at a 0.01 threshold, promoted at 0.1](ping_pong/manifests/analysisruns.png)
+
+[Exercise 4.5](https://github.com/OtsoH/K8sSubmissions/tree/4.5)

@@ -20,6 +20,10 @@ def wait_for_db():
                     "id serial PRIMARY KEY, "
                     f"content varchar({MAX_TODO_LENGTH}) NOT NULL)"
                 )
+                conn.execute(
+                    "ALTER TABLE todos "
+                    "ADD COLUMN IF NOT EXISTS done boolean NOT NULL DEFAULT false"
+                )
             return
         except psycopg.OperationalError as e:
             print(f"Waiting for database: {e}", flush=True)
@@ -45,7 +49,8 @@ def healthz():
 @app.get("/todos")
 def get_todos():
     with psycopg.connect() as conn:
-        return [row[0] for row in conn.execute("SELECT content FROM todos ORDER BY id")]
+        rows = conn.execute("SELECT id, content, done FROM todos ORDER BY id")
+        return [{"id": i, "content": content, "done": done} for i, content, done in rows]
 
 
 @app.post("/todos", status_code=201)
@@ -63,6 +68,19 @@ def create_todo(new_todo: NewTodo):
         conn.execute("INSERT INTO todos (content) VALUES (%s)", (text,))
     print(f"Created todo: {text}", flush=True)
     return {"todo": text}
+
+
+@app.put("/todos/{todo_id}")
+def mark_done(todo_id: int):
+    with psycopg.connect() as conn:
+        row = conn.execute(
+            "UPDATE todos SET done = true WHERE id = %s RETURNING content", (todo_id,)
+        ).fetchone()
+    if row is None:
+        print(f"Rejected done: no todo with id {todo_id}", flush=True)
+        raise HTTPException(status_code=404, detail="todo not found")
+    print(f"Marked done: {row[0]}", flush=True)
+    return {"id": todo_id, "done": True}
 
 
 def main():

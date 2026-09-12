@@ -30,12 +30,24 @@ def fetch_todos():
         return None
 
 
+def render_item(todo):
+    text = html.escape(todo["content"])
+    if todo["done"]:
+        return f'    <li>{text} <span class="done">Done</span></li>'
+    return (
+        f'    <li>{text}'
+        f'<form method="post" action="/todos/{todo["id"]}/done">'
+        f'<button class="mark-done" type="submit">Mark done</button>'
+        f'</form></li>'
+    )
+
+
 def render_items(todos):
     if todos is None:
         return "    <li><em>todo-backend is unavailable</em></li>"
     if not todos:
         return "    <li><em>Nothing to do yet</em></li>"
-    return "\n".join(f"    <li>{html.escape(todo)}</li>" for todo in todos)
+    return "\n".join(render_item(todo) for todo in todos)
 
 
 def render_page(todos):
@@ -52,6 +64,13 @@ def render_page(todos):
     .new-todo {{ margin: 1rem 0; }}
     .new-todo input {{ width: 24rem; max-width: 100%; padding: 0.3rem; }}
     ul {{ padding-left: 1.25rem; }}
+    li {{ margin-bottom: 0.3rem; }}
+    li form {{ display: inline; margin-left: 0.5rem; }}
+    button {{ padding: 0.3rem 0.6rem; border: none; color: #fff; cursor: pointer; }}
+    .send {{ background: #2e7d32; }}
+    .mark-done {{ background: #1565c0; }}
+    .break {{ background: #c62828; }}
+    .done {{ color: #2e7d32; font-weight: bold; margin-left: 0.5rem; }}
   </style>
 </head>
 <body>
@@ -60,10 +79,10 @@ def render_page(todos):
   <form class="new-todo" method="post" action="/todos">
     <input type="text" name="todo" maxlength="{MAX_TODO_LENGTH}" required
            placeholder="What needs doing?" aria-label="New todo">
-    <button type="submit">Send</button>
+    <button class="send" type="submit">Send</button>
   </form>
   <form method="post" action="/break">
-    <button type="submit">Break the app</button>
+    <button class="break" type="submit">Break the app</button>
   </form>
   <ul>
 {render_items(todos)}
@@ -121,6 +140,16 @@ def create_todo(todo: str = Form(...)):
             response.raise_for_status()
         except httpx.HTTPError as error:
             print(f"Could not create todo: {error}", flush=True)
+    return RedirectResponse("/", status_code=303)
+
+
+@app.post("/todos/{todo_id}/done")
+def mark_done(todo_id: int):
+    try:
+        response = httpx.put(f"{TODO_BACKEND_URL}/todos/{todo_id}", timeout=2)
+        response.raise_for_status()
+    except httpx.HTTPError as error:
+        print(f"Could not mark todo {todo_id} done: {error}", flush=True)
     return RedirectResponse("/", status_code=303)
 
 
