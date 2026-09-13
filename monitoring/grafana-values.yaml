@@ -6,6 +6,7 @@ datasources:
     datasources:
       - name: Prometheus
         type: prometheus
+        uid: prometheus
         access: proxy
         url: http://prom-prometheus-server
         isDefault: true
@@ -17,3 +18,230 @@ datasources:
           httpHeaderName1: X-Scope-OrgID
         secureJsonData:
           httpHeaderValue1: "1"
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: default
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    nats:
+      json: |
+        {
+          "title": "NATS Overview",
+          "uid": "nats",
+          "tags": [
+            "nats"
+          ],
+          "editable": true,
+          "schemaVersion": 39,
+          "timezone": "browser",
+          "refresh": "10s",
+          "time": {
+            "from": "now-1h",
+            "to": "now"
+          },
+          "annotations": {
+            "list": []
+          },
+          "templating": {
+            "list": []
+          },
+          "links": [],
+          "panels": [
+            {
+              "type": "timeseries",
+              "title": "Connections",
+              "id": 1,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "x": 0,
+                "y": 0,
+                "w": 12,
+                "h": 8
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {
+                    "lineWidth": 2,
+                    "fillOpacity": 8
+                  }
+                },
+                "overrides": []
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "gnatsd_varz_connections",
+                  "legendFormat": "connections",
+                  "refId": "A"
+                }
+              ]
+            },
+            {
+              "type": "timeseries",
+              "title": "Subscriptions",
+              "id": 2,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "x": 12,
+                "y": 0,
+                "w": 12,
+                "h": 8
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {
+                    "lineWidth": 2,
+                    "fillOpacity": 8
+                  }
+                },
+                "overrides": []
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "gnatsd_varz_subscriptions",
+                  "legendFormat": "subscriptions",
+                  "refId": "A"
+                }
+              ]
+            },
+            {
+              "type": "timeseries",
+              "title": "Message rate",
+              "id": 3,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "x": 0,
+                "y": 8,
+                "w": 12,
+                "h": 8
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {
+                    "lineWidth": 2,
+                    "fillOpacity": 8
+                  },
+                  "unit": "mps"
+                },
+                "overrides": []
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "rate(gnatsd_varz_in_msgs[5m])",
+                  "legendFormat": "in",
+                  "refId": "A"
+                },
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "rate(gnatsd_varz_out_msgs[5m])",
+                  "legendFormat": "out",
+                  "refId": "B"
+                }
+              ]
+            },
+            {
+              "type": "timeseries",
+              "title": "Deliveries per message (1 = queue group, 6 = duplicated)",
+              "id": 4,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "x": 12,
+                "y": 8,
+                "w": 12,
+                "h": 8
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {
+                    "lineWidth": 2,
+                    "fillOpacity": 8
+                  }
+                },
+                "overrides": []
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "gnatsd_varz_out_msgs / gnatsd_varz_in_msgs",
+                  "legendFormat": "out / in",
+                  "refId": "A"
+                }
+              ]
+            },
+            {
+              "type": "timeseries",
+              "title": "Slow consumers",
+              "id": 5,
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "gridPos": {
+                "x": 0,
+                "y": 16,
+                "w": 24,
+                "h": 8
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "custom": {
+                    "lineWidth": 2,
+                    "fillOpacity": 8
+                  }
+                },
+                "overrides": []
+              },
+              "targets": [
+                {
+                  "datasource": {
+                    "type": "prometheus",
+                    "uid": "prometheus"
+                  },
+                  "expr": "gnatsd_varz_slow_consumers",
+                  "legendFormat": "slow consumers",
+                  "refId": "A"
+                }
+              ]
+            }
+          ]
+        }

@@ -1,14 +1,36 @@
+import asyncio
 import os
 import time
 
+import nats
 import psycopg
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 MAX_TODO_LENGTH = 140
+NATS_URL = os.getenv("NATS_URL", "nats://nats-svc:4222")
 
 app = FastAPI()
+
+
+async def _publish(message: str):
+    nc = await nats.connect(
+        NATS_URL,
+        connect_timeout=1,
+        max_reconnect_attempts=1,
+        reconnect_time_wait=0,
+        allow_reconnect=False,
+    )
+    await nc.publish("todos", message.encode())
+    await nc.drain()
+
+
+def broadcast(message: str):
+    try:
+        asyncio.run(_publish(message))
+    except Exception as error:
+        print(f"NATS publish failed: {error}", flush=True)
 
 
 def wait_for_db():
@@ -67,6 +89,7 @@ def create_todo(new_todo: NewTodo):
     with psycopg.connect() as conn:
         conn.execute("INSERT INTO todos (content) VALUES (%s)", (text,))
     print(f"Created todo: {text}", flush=True)
+    broadcast(f"A todo was created: {text}")
     return {"todo": text}
 
 
@@ -80,6 +103,7 @@ def mark_done(todo_id: int):
         print(f"Rejected done: no todo with id {todo_id}", flush=True)
         raise HTTPException(status_code=404, detail="todo not found")
     print(f"Marked done: {row[0]}", flush=True)
+    broadcast(f"A todo was marked done: {row[0]}")
     return {"id": todo_id, "done": True}
 
 

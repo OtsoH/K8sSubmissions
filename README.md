@@ -139,3 +139,7 @@ pass all five measurements and promote to stable.
 ![kubectl argo rollouts: the same revision aborted at a 0.01 threshold, promoted at 0.1](ping_pong/manifests/analysisruns.png)
 
 [Exercise 4.5](https://github.com/OtsoH/K8sSubmissions/tree/4.5)
+
+[Exercise 4.6](https://github.com/OtsoH/K8sSubmissions/tree/4.6)
+
+![Grafana: six broadcaster connections, one delivery per message](monitoring/nats_overview.png)
