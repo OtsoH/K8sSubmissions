@@ -4,15 +4,17 @@ kind: Kustomization
 namespace: exercises
 
 resources:
-  - namespace.yaml
-  - configmap.yaml
-  - deployment.yaml
-  - service.yaml
-  - gateway.yaml
-  - httproute.yaml
+- namespace.yaml
+- configmap.yaml
+- deployment.yaml
+- service.yaml
+- gateway.yaml
+- httproute.yaml
 
 images:
-  - name: log-output-writer
-    newTag: "1.0"
-  - name: log-output-reader
-    newTag: "1.3"
+- name: log-output-reader
+  newName: otsoh/log-output-reader
+  newTag: b99c2b395a8405aee62004af16d37236e202fd87
+- name: log-output-writer
+  newName: otsoh/log-output-writer
+  newTag: b99c2b395a8405aee62004af16d37236e202fd87

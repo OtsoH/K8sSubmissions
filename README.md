@@ -143,3 +143,7 @@ pass all five measurements and promote to stable.
 [Exercise 4.6](https://github.com/OtsoH/K8sSubmissions/tree/4.6)
 
 ![Grafana: six broadcaster connections, one delivery per message](monitoring/nats_overview.png)
+
+[Exercise 4.7](https://github.com/OtsoH/K8sSubmissions/tree/4.7)
+
+![Argo CD: log-output synced to the commit the pipeline pushed, auto sync enabled](argocd/manifests/log_output_argo.png)
