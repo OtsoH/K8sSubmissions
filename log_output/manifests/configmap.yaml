@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: log-output-configmap
 data:
-  MESSAGE: hello world
+  MESSAGE: hello world!
   information.txt: |
     this text is informational
