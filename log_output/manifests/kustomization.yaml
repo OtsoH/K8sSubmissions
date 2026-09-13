@@ -14,7 +14,7 @@ resources:
 images:
 - name: log-output-reader
   newName: otsoh/log-output-reader
-  newTag: b99c2b395a8405aee62004af16d37236e202fd87
+  newTag: c4ceee1584083260de16e6ddd6a7a7797ea85f3f
 - name: log-output-writer
   newName: otsoh/log-output-writer
-  newTag: b99c2b395a8405aee62004af16d37236e202fd87
+  newTag: c4ceee1584083260de16e6ddd6a7a7797ea85f3f
