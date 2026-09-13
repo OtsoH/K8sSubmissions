@@ -1,0 +1,50 @@
+name: Release log-output
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - log_output/**
+
+jobs:
+  build-publish:
+    name: Build, push, release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      WRITER: ${{ secrets.DOCKERHUB_USERNAME }}/log-output-writer:${{ github.sha }}
+      READER: ${{ secrets.DOCKERHUB_USERNAME }}/log-output-reader:${{ github.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and publish
+        run: |
+          docker build --tag "$WRITER" log_output/writer
+          docker build --tag "$READER" log_output/reader
+          docker push "$WRITER"
+          docker push "$READER"
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v3
+
+      - name: Point the manifests at the new images
+        working-directory: log_output/manifests
+        run: |
+          kustomize edit set image log-output-writer="$WRITER"
+          kustomize edit set image log-output-reader="$READER"
+
+      - name: Commit the new tags
+        uses: EndBug/add-and-commit@v10
+        with:
+          add: log_output/manifests/kustomization.yaml
+          message: release log-output ${{ github.sha }}

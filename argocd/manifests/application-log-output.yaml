@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: log-output
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/OtsoH/K8sSubmissions.git
+    targetRevision: main
+    path: log_output/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: exercises
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
