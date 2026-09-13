@@ -5,6 +5,7 @@ namespace: argocd
 
 resources:
   - application-log-output.yaml
-  - application-project.yaml
+  - application-project-production.yaml
+  - application-project-staging.yaml
   - gateway.yaml
   - httproute.yaml

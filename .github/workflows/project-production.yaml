@@ -1,11 +1,9 @@
-name: Release the project
+name: Release the project to production
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - the_project/**
+    tags:
+      - "*"
 
 jobs:
   build-publish:
@@ -14,12 +12,12 @@ jobs:
     permissions:
       contents: write
     env:
-      APP: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ github.sha }}
-      BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:${{ github.sha }}
-      BROADCASTER: ${{ secrets.DOCKERHUB_USERNAME }}/broadcaster:${{ github.sha }}
+      APP: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ github.ref_name }}
+      BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:${{ github.ref_name }}
+      BROADCASTER: ${{ secrets.DOCKERHUB_USERNAME }}/broadcaster:${{ github.ref_name }}
 
     steps:
-      - name: Checkout
+      - name: Checkout the tagged commit
         uses: actions/checkout@v6
 
       - name: Login to Docker Hub
@@ -37,11 +35,16 @@ jobs:
           docker push "$BACKEND"
           docker push "$BROADCASTER"
 
+      - name: Check out main to write the release to
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v3
 
-      - name: Point the manifests at the new images
-        working-directory: the_project/manifests
+      - name: Point the production overlay at the new images
+        working-directory: the_project/manifests/overlays/production
         run: |
           kustomize edit set image todo-app="$APP"
           kustomize edit set image todo-backend="$BACKEND"
@@ -50,5 +53,5 @@ jobs:
       - name: Commit the new tags
         uses: EndBug/add-and-commit@v10
         with:
-          add: the_project/manifests/kustomization.yaml
-          message: release the project ${{ github.sha }}
+          add: the_project/manifests/overlays/production/kustomization.yaml
+          message: release production ${{ github.ref_name }}

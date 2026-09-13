@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: the-project
+  name: the-project-staging
 spec:
   project: default
   source:
     repoURL: https://github.com/OtsoH/K8sSubmissions.git
     targetRevision: main
-    path: the_project/manifests
+    path: the_project/manifests/overlays/staging
   destination:
     server: https://kubernetes.default.svc
-    namespace: project
+    namespace: project-staging
   syncPolicy:
     automated:
       prune: true

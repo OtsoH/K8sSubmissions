@@ -7,10 +7,8 @@ spec:
   listeners:
     - name: http
       protocol: HTTP
-      # Traefik attaches a listener to the entrypoint with the same port, and
-      # its web entrypoint listens on 8000 inside the pod (published as 80).
       port: 8000
-      hostname: project.localhost
+      hostname: staging.localhost
       allowedRoutes:
         namespaces:
           from: Same

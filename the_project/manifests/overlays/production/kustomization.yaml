@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: project
+
+resources:
+  - ./../../base
+  - namespace.yaml
+  - postgres-backup-cronjob.yaml
+
+images:
+  - name: broadcaster
+    newName: otsoh/broadcaster
+    newTag: 5fea714a20ea62944f7b1f903067211f9ad595b7
+  - name: todo-app
+    newName: otsoh/todo-app
+    newTag: 5fea714a20ea62944f7b1f903067211f9ad595b7
+  - name: todo-backend
+    newName: otsoh/todo-backend
+    newTag: 5fea714a20ea62944f7b1f903067211f9ad595b7

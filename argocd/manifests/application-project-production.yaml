@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: the-project-production
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/OtsoH/K8sSubmissions.git
+    targetRevision: main
+    path: the_project/manifests/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: project
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

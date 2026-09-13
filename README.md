@@ -151,3 +151,5 @@ pass all five measurements and promote to stable.
 [Exercise 4.8](https://github.com/OtsoH/K8sSubmissions/tree/4.8)
 
 ![Argo CD: project synced to the commit the pipeline pushed, auto sync enabled](argocd/manifests/project_argo.png)
+
+[Exercise 4.9](https://github.com/OtsoH/K8sSubmissions/tree/4.9)
