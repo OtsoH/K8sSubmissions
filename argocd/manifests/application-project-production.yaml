@@ -5,9 +5,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/OtsoH/K8sSubmissions.git
+    repoURL: https://github.com/OtsoH/K8sSubmissions-config.git
     targetRevision: main
-    path: the_project/manifests/overlays/production
+    path: overlays/production
   destination:
     server: https://kubernetes.default.svc
     namespace: project

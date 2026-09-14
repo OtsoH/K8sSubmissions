@@ -11,8 +11,6 @@ jobs:
   build-publish:
     name: Build, push, release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     env:
       APP: ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ github.sha }}
       BACKEND: ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:${{ github.sha }}
@@ -37,11 +35,18 @@ jobs:
           docker push "$BACKEND"
           docker push "$BROADCASTER"
 
+      - name: Check out the config repo
+        uses: actions/checkout@v6
+        with:
+          repository: OtsoH/K8sSubmissions-config
+          token: ${{ secrets.CONFIG_REPO_TOKEN }}
+          path: config
+
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v3
 
       - name: Point the staging overlay at the new images
-        working-directory: the_project/manifests/overlays/staging
+        working-directory: config/overlays/staging
         run: |
           kustomize edit set image todo-app="$APP"
           kustomize edit set image todo-backend="$BACKEND"
@@ -50,5 +55,6 @@ jobs:
       - name: Commit the new tags
         uses: EndBug/add-and-commit@v10
         with:
-          add: the_project/manifests/overlays/staging/kustomization.yaml
+          cwd: ./config
+          add: overlays/staging/kustomization.yaml
           message: release staging ${{ github.sha }}
