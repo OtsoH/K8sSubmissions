@@ -1,0 +1,7 @@
+apiVersion: dwk.io/v1
+kind: DummySite
+metadata:
+  name: wikipedia
+  namespace: dummysite
+spec:
+  website_url: https://en.wikipedia.org/wiki/Kubernetes

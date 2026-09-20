@@ -1,0 +1,10 @@
+[project]
+name = "dummysite-site"
+version = "0.1.0"
+description = "Serves a copy of a website"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.141.1",
+    "httpx>=0.28.1",
+    "uvicorn>=0.52.1",
+]

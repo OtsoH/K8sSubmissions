@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummysite-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dummysite-controller
+  template:
+    metadata:
+      labels:
+        app: dummysite-controller
+    spec:
+      serviceAccountName: dummysite-controller
+      containers:
+        - name: controller
+          image: dummysite-controller
+          env:
+            - name: SITE_IMAGE
+              value: dummysite-site:1.0
+            - name: GATEWAY_NAME
+              value: dummysite-gateway
