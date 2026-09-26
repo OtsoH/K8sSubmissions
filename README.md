@@ -163,3 +163,7 @@ The project's manifests now live in their own repository,
 pushes the images, then writes the new tags into that one, and Argo CD watches it.
 
 [Exercise 5.1](https://github.com/OtsoH/K8sSubmissions/tree/5.1)
+
+[Exercise 5.2](https://github.com/OtsoH/K8sSubmissions/tree/5.2)
+
+![Kiali: the bookinfo traffic graph in the default namespace](screenshots/graph_5.2.png)
