@@ -13,9 +13,12 @@ resources:
 - greeter.yaml
 
 images:
+- name: greeter
+  newName: otsoh/log-output-greeter
+  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
 - name: log-output-reader
   newName: otsoh/log-output-reader
-  newTag: c4ceee1584083260de16e6ddd6a7a7797ea85f3f
+  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
 - name: log-output-writer
   newName: otsoh/log-output-writer
-  newTag: c4ceee1584083260de16e6ddd6a7a7797ea85f3f
+  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
