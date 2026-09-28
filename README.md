@@ -167,3 +167,7 @@ pushes the images, then writes the new tags into that one, and Argo CD watches i
 [Exercise 5.2](https://github.com/OtsoH/K8sSubmissions/tree/5.2)
 
 ![Kiali: the bookinfo traffic graph in the default namespace](screenshots/graph_5.2.png)
+
+[Exercise 5.3](https://github.com/OtsoH/K8sSubmissions/tree/5.3)
+
+![Kiali: log-output splitting greeter traffic 75/25 between v1 and v2 in the exercises namespace](screenshots/graph_5.3.png)
