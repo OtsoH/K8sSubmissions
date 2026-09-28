@@ -49,6 +49,8 @@ spec:
               value: /app/config/information.txt
             - name: PING_PONG_URL
               value: http://ping-pong-svc/pings
+            - name: GREETER_URL
+              value: http://greeter-svc:4567/
             - name: MESSAGE
               valueFrom:
                 configMapKeyRef:

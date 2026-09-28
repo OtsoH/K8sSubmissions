@@ -16,6 +16,7 @@ jobs:
     env:
       WRITER: ${{ secrets.DOCKERHUB_USERNAME }}/log-output-writer:${{ github.sha }}
       READER: ${{ secrets.DOCKERHUB_USERNAME }}/log-output-reader:${{ github.sha }}
+      GREETER: ${{ secrets.DOCKERHUB_USERNAME }}/log-output-greeter:${{ github.sha }}
 
     steps:
       - name: Checkout
@@ -31,8 +32,10 @@ jobs:
         run: |
           docker build --tag "$WRITER" log_output/writer
           docker build --tag "$READER" log_output/reader
+          docker build --tag "$GREETER" log_output/greeter
           docker push "$WRITER"
           docker push "$READER"
+          docker push "$GREETER"
 
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v3
@@ -42,6 +45,7 @@ jobs:
         run: |
           kustomize edit set image log-output-writer="$WRITER"
           kustomize edit set image log-output-reader="$READER"
+          kustomize edit set image greeter="$GREETER"
 
       - name: Commit the new tags
         uses: EndBug/add-and-commit@v10

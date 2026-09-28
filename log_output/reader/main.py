@@ -10,17 +10,18 @@ LOG_FILE = Path(os.getenv("LOG_FILE", "/app/files/log.txt"))
 PING_PONG_URL = os.getenv("PING_PONG_URL", "http://ping-pong-svc:3456/pings")
 INFORMATION_FILE = Path(os.getenv("INFORMATION_FILE", "/app/config/information.txt"))
 MESSAGE = os.getenv("MESSAGE", "no message set")
+GREETER_URL = os.getenv("GREETER_URL", "http://greeter-svc:4567/")
 
 app = FastAPI()
 
 
-def pong_count():
+def fetch_text(url):
     try:
-        response = httpx.get(PING_PONG_URL, timeout=2)
+        response = httpx.get(url, timeout=2)
         response.raise_for_status()
         return response.text.strip()
     except httpx.HTTPError as exc:
-        print(f"ping-pong unreachable: {exc}", flush=True)
+        print(f"{url} unreachable: {exc}", flush=True)
         return "unavailable"
 
 
@@ -43,7 +44,8 @@ def root():
     return (
         f"file content: {information}\n"
         f"env variable: MESSAGE={MESSAGE}\n"
-        f"{log_content}Ping / Pongs: {pong_count()}"
+        f"{log_content}Ping / Pongs: {fetch_text(PING_PONG_URL)}\n"
+        f"greetings: {fetch_text(GREETER_URL)}"
     )
 
 

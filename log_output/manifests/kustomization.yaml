@@ -10,6 +10,7 @@ resources:
 - service.yaml
 - gateway.yaml
 - httproute.yaml
+- greeter.yaml
 
 images:
 - name: log-output-reader
