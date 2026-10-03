@@ -15,10 +15,10 @@ resources:
 images:
 - name: greeter
   newName: otsoh/log-output-greeter
-  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
+  newTag: 88fc7167298cd8cb4ac8815c10b85d6e2d075133
 - name: log-output-reader
   newName: otsoh/log-output-reader
-  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
+  newTag: 88fc7167298cd8cb4ac8815c10b85d6e2d075133
 - name: log-output-writer
   newName: otsoh/log-output-writer
-  newTag: 657853d7c05ca9b0c4dc64700a70511cd6a751b2
+  newTag: 88fc7167298cd8cb4ac8815c10b85d6e2d075133
