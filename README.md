@@ -175,3 +175,9 @@ pushes the images, then writes the new tags into that one, and Argo CD watches i
 [Exercise 5.4](https://github.com/OtsoH/K8sSubmissions/tree/5.4)
 
 ![The page switching from Kubernetes to a random article after the sidecar's fetch](screenshots/ex5.4.png)
+
+[Exercise 5.6](https://github.com/OtsoH/K8sSubmissions/tree/5.6)
+
+![A Knative Service answering through Kourier with HTTP 200](screenshots/curl_5.6.png)
+
+![Ten requests split between the Hello World and Hello Knative revisions](screenshots/traffic-split_5.6.png)
