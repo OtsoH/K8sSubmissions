@@ -181,3 +181,7 @@ pushes the images, then writes the new tags into that one, and Argo CD watches i
 ![A Knative Service answering through Kourier with HTTP 200](screenshots/curl_5.6.png)
 
 ![Ten requests split between the Hello World and Hello Knative revisions](screenshots/traffic-split_5.6.png)
+
+[Exercise 5.7](https://github.com/OtsoH/K8sSubmissions/tree/5.7)
+
+![ping-pong running as a Knative Service, answering through Kourier with pong 0](screenshots/curl_5.7.png)

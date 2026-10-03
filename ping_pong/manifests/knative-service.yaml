@@ -1,0 +1,26 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ping-pong-svc
+spec:
+  template:
+    spec:
+      containers:
+        - image: ping-pong
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /pings
+          env:
+            - name: PGHOST
+              value: postgres-svc
+            - name: PGUSER
+              value: pingpong
+            - name: PGDATABASE
+              value: pingpong
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
